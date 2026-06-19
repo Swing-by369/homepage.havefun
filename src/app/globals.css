@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+/* ===== Design tokens (dark theme) ===== */
+@theme {
+  --color-base: #0a0e1a;        /* page background (near-black navy) */
+  --color-ink: #0d1226;         /* deep navy */
+  --color-surface: #141a33;     /* card surface */
+  --color-surface-2: #1b2342;   /* elevated surface */
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-strong: rgba(255, 255, 255, 0.16);
+  --color-fg: #e8ecf4;          /* primary text */
+  --color-muted: #8a93a8;       /* secondary text */
+  --color-blue: #38bdf8;        /* tech blue accent */
+  --color-blue-deep: #2563eb;
+  --color-green: #22f5a0;       /* neon green accent */
+
+  --font-sans: var(--font-inter), var(--font-noto), system-ui, -apple-system,
+    "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+}
+
+/* ===== Base ===== */
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+body {
+  background-color: var(--color-base);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.01em;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-green) 30%, transparent);
+  color: #ffffff;
+}
+
+/* ===== Utilities ===== */
+.text-gradient {
+  background-image: linear-gradient(100deg, var(--color-blue), var(--color-green));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.glow-blue {
+  box-shadow: 0 0 60px -12px color-mix(in srgb, var(--color-blue) 55%, transparent);
+}
+.glow-green {
+  box-shadow: 0 0 48px -10px color-mix(in srgb, var(--color-green) 50%, transparent);
+}
+
+/* subtle background grid for hero / sections */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 1rem;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-line-strong);
+}
+
+/* ===== Scroll reveal animation ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

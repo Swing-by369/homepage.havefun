@@ -1,40 +1,73 @@
-# HaveFun ホームページ
+# Synaptic — AI導入支援・DXコンサルティング コーポレートサイト
 
-「事業・サービス紹介」向けのランディングページ（LP）です。
-ビルド不要の **静的サイト（HTML + Tailwind CSS + バニラJS）** なので、ブラウザで開くだけで動作し、GitHub Pages などにそのまま公開できます。
+AI導入支援・DXコンサルティング会社向けのコーポレートサイトです。
+ダークモードを基調としたミニマルなデザインで、サービス紹介から無料相談への導線までをカバーします。
 
-## 構成
+> サンプルのブランド名・実績・料金で構築しています。`src/content/site.ts` を編集すると、文言・実績・料金などをまとめて差し替えられます。
 
-| ファイル | 役割 |
+## 技術構成
+
+- **Next.js 16**（App Router）／ **React 19** ／ **TypeScript**
+- **Tailwind CSS v4**（CSSベースのデザイントークン）
+- スクロール表示アニメーション・数値カウントアップは Intersection Observer による自前実装
+- `prefers-reduced-motion` 対応（モーション軽減設定を尊重）
+
+## ページ構成
+
+| パス | 内容 |
 | --- | --- |
-| `index.html` | ページ本体（ヒーロー / 特徴 / サービス / 流れ / お客様の声 / お問い合わせ） |
-| `styles.css` | スクロールアニメーションなどの追加スタイル |
-| `main.js` | ヘッダー追従・モバイルメニュー・スクロール表示・フォーム処理 |
+| `/` | トップ（ヒーロー／課題／強み／サービス／事例／実績／料金／流れ／FAQ／お知らせ） |
+| `/services` | サービス詳細（AI導入支援・DX／受託開発／人材育成） |
+| `/works` | 導入事例（月50時間削減の事例） |
+| `/pricing` | 料金・プラン（参考価格＋FAQ） |
+| `/about` | 会社概要・メンバー紹介 |
+| `/news` ・ `/news/[slug]` | お知らせ／ブログ一覧・記事詳細 |
+| `/faq` | よくある質問 |
+| `/contact` | お問い合わせ（無料オンライン相談の導線） |
 
-Tailwind CSS は CDN から読み込んでいるため、追加インストールは不要です。
-
-## ローカルで確認する
-
-ファイルをブラウザで直接開くか、簡易サーバーで確認できます。
+## セットアップ
 
 ```bash
-# どちらか
-open index.html              # macOS
-python3 -m http.server 8000  # → http://localhost:8000
+npm install
+npm run dev      # http://localhost:3000
+```
+
+その他のコマンド:
+
+```bash
+npm run build    # 本番ビルド
+npm run start    # 本番サーバー起動
+npm run lint     # ESLint
 ```
 
 ## カスタマイズ
 
-- **サービス名・コピー**: `index.html` 内の「HaveFun」やキャッチコピーを書き換えてください。
-- **配色**: `index.html` 冒頭の `tailwind.config` 内 `brand` カラーを変更すると全体のテーマ色が変わります。
-- **連絡先**: フッターの メールアドレス（`hello@havefun.example`）を実際のものに置き換えてください。
-- **お問い合わせフォーム**: 現在は送信デモです。Formspree などの外部サービスや独自バックエンドに接続すると実送信できます（`main.js` の `handleSubmit` を参照）。
+| やりたいこと | 編集する場所 |
+| --- | --- |
+| 会社名・実績・料金・FAQ・お知らせ等の文言 | `src/content/site.ts` |
+| テーマカラー（背景・テックブルー・ネオングリーン） | `src/app/globals.css` の `@theme` トークン |
+| 共通レイアウト（ヘッダー／フッター／フローティングCTA） | `src/components/` |
+| お問い合わせフォームの送信処理 | `src/components/ContactForm.tsx`（現在はデモ） |
 
-## 公開（GitHub Pages）
+### デザイントークン（`globals.css`）
 
-1. リポジトリの **Settings → Pages** を開く
-2. **Source** を `Deploy from a branch` にする
-3. Branch を `main`（または公開したいブランチ）/ `root` に設定して保存
-4. 数分後に発行される URL で公開されます
+| トークン | 用途 | 値 |
+| --- | --- | --- |
+| `--color-base` | ページ背景 | `#0a0e1a` |
+| `--color-surface` | カード面 | `#141a33` |
+| `--color-blue` | アクセント（テックブルー） | `#38bdf8` |
+| `--color-green` | アクセント（ネオングリーン・CTA） | `#22f5a0` |
 
-> 本番運用では、Tailwind CDN を CLI ビルドに切り替えると読み込みが高速・安定します。
+## お問い合わせフォームについて
+
+現在はフロントのみのデモ動作です。実送信するには、`ContactForm.tsx` の `handleSubmit` を
+Formspree などの外部サービスや独自APIに接続してください。無料相談の予約は Calendly 等の
+外部予約ツールへ差し替えることも可能です。
+
+## デプロイ
+
+Vercel へのデプロイを推奨します（リポジトリを連携するだけで自動ビルド／公開）。
+
+## 設計ドキュメント
+
+サイト全体の構成・デザイン方針は [`docs/proposal.md`](./docs/proposal.md) にまとめています。
